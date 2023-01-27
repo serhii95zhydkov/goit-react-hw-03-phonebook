@@ -11,6 +11,20 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('my-contacts'));
+    if (contacts && contacts.length) {
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts.length !== contacts.length) {
+      localStorage.setItem('my-contacts', JSON.stringify(contacts));
+    }
+  }
+
   formSubmitHandler = ({ name, number }) => {
     if (this.isDublicate(name)) {
       alert(`${name} is already in contacts.`);
